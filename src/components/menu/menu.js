@@ -1,5 +1,7 @@
- import React,{ PureComponent } from 'react';
+import React,{ PureComponent } from 'react';
 import { View, Text, Image, Linking, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+
+//Componente necessário para acionar a transição da tela principal através de uma função filha
 import { withNavigation } from 'react-navigation';
 
 import EnderecoMod from '../modals/enderecoMod/enderecoMod';
@@ -7,6 +9,8 @@ import EnderecoMod from '../modals/enderecoMod/enderecoMod';
 const { width, height } = Dimensions.get("window");
 
 class Menu extends PureComponent {
+
+//Metodo de chamada do aplicativo de ligação do dispositivo, passando número de telefone retornado pela API
   callNumber = (url) =>{
       Linking.canOpenURL(url).then(supported => {
       if (!supported) {
@@ -17,14 +21,16 @@ class Menu extends PureComponent {
     }).catch(err => console.error('An error occurred', err));
   }
 
+//função que rola a tela principal automaticamente até os comentários, usando como referência a altura da tela do dispositivo para obter maior precisão
   onButtonPress = () => {
-    this.props.scroll.scrollTo({x: 370, y: 370, animated: true});
+    this.props.scroll.scrollTo({x: height*1, y: height*1.07, animated: true});
   }
  
 
   render = () => (
     <View style={[styles.container]}>
       
+{/* renderização do modal do botão de endereço, passando como props para o mesmo o resultado da API necessário */}
       <EnderecoMod ref={c => this.enderecoModal = c}
         info={this.props.info}
       />
@@ -49,7 +55,6 @@ class Menu extends PureComponent {
         <Image
           source={require('../../assets/imgs/servicos.png')}
           style={styles.icons}
-          onPress
         />
         <Text style={styles.btnTxt}>Serviços</Text>
       </TouchableOpacity>
@@ -67,6 +72,7 @@ class Menu extends PureComponent {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button}
+// chamada do metodo de rolagem automátiva
         onPress={this.onButtonPress}
       >
         <Image
@@ -116,4 +122,5 @@ const styles = StyleSheet.create({
   },
 });
 
+//exportação do componente Menu através do componente withNavigation
 export default withNavigation(Menu);

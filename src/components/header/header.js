@@ -3,27 +3,32 @@ import { View, Text, StyleSheet, Dimensions, Image, StatusBar } from 'react-nati
 
 import { Header as NavigationHeader, HeaderBackButton } from "react-navigation";
 
-const { width, height } = Dimensions.get("window");
+//medição da tela e declaração da variável que torna o layout adaptável
+const { width } = Dimensions.get("window");
 
 type Props = {
   title: String,
 };
 
+//Exportação do componente header personalizado
 export default class Header extends PureComponent<Props> {
   static defaultProps = {
     title: '',
   };
 
+//retornar a tela anterior 
   goBack = () => {
     this.props.navigation && this.props.navigation.goBack();
   };
 
+//montagem do botão de voltar
   renderLeft = () => (
     <View style={styles.btnView}>
         <HeaderBackButton onPress={this.goBack} tintColor= 'white' />
     </View>
   );
 
+//montagem do título da tela
   renderCenter = () => (
     <View style={styles.titleContainer}>
         <StatusBar backgroundColor='#cb8a19'/>
@@ -36,6 +41,7 @@ export default class Header extends PureComponent<Props> {
     </View>
   );
 
+//montagem do botão de pesquisa
   renderRight = () => (
     <View>
       <Image
@@ -45,6 +51,7 @@ export default class Header extends PureComponent<Props> {
     </View>
   );
 
+//renderização do componente
   render = () => (
     <View style={[styles.container]}>
         {this.renderLeft()}
@@ -62,6 +69,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: NavigationHeader.HEIGHT,
     width: width,
+    elevation: 8,
   },
   titleContainer: {
     flexDirection: 'row',

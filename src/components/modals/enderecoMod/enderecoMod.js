@@ -7,10 +7,12 @@ export default class EnderecoMod extends PureComponent {
   state = {
     modalVisible: false,
   };
+
     setModalVisible(visible) {
     this.setState({modalVisible: visible});
   };
     render = () => (
+//renderização do container modal
     <Modal
       style={styles.modalContainer}
       animationType="slide"
@@ -21,21 +23,23 @@ export default class EnderecoMod extends PureComponent {
       }}
     >
 
-    <View style={styles.container}>
-      <Text style={styles.txt}>{this.props.info.endereco}.</Text>
-      <Text style={styles.txt}>{this.props.info.bairro}, {this.props.info.cidade}.</Text>
+{/* elementos visíveis do componente */}
+      <View style={styles.container}>
+        <Text style={styles.txt}>{this.props.info.endereco}.</Text>
+        <Text style={styles.txt}>{this.props.info.bairro}, {this.props.info.cidade}.</Text>
       
-      <TouchableOpacity
-        style={styles.btn} 
-        onPress={() => {
-          this.setModalVisible(!this.state.modalVisible);
-        }}
-      >
-        <Text>
-          Fechar
-        </Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          style={styles.btn} 
+// método de alteração do estado de visibilidade do modal
+          onPress={() => {
+            this.setModalVisible(!this.state.modalVisible);
+          }}
+        >
+          <Text>
+            Fechar
+          </Text>
+        </TouchableOpacity>
+      </View>
 
     </Modal>
   );

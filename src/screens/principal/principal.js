@@ -1,23 +1,27 @@
 import React,{ PureComponent } from 'react';
 import { View, Image, Dimensions, Text, ScrollView, StyleSheet } from 'react-native';
 
+//imports de libs
 import axios from 'axios';
 import MapView,{ Marker } from 'react-native-maps';
 
+//import de componentes pessoais
 import Header from '../../components/header/header';
 import Menu from '../../components/menu/menu';
 
 const { width, height } = Dimensions.get('window');
 
 export default class Principal extends PureComponent {
+//estado inicial dos states
     state = {
         info:{},
         comentarios: [],
+//state guardando o item chave da tela anterior
         id: this.props.navigation.getParam('id'),
     };
 
-
     componentDidMount = () => (
+//soma da chamada inicial da api com o item selecionado para o retorno das informações corretas
         axios.get('http://dev.4all.com:3003/tarefa/'+this.state.id)
             .then( ({data,status}) => {
                 if (status === 200) {
@@ -26,6 +30,7 @@ export default class Principal extends PureComponent {
             })
     );
 
+//Estrutura de cada caixa de comentário
     renderComentarios = () => (
         this.state.comentarios.map((item, index) => 
             <View style={styles.comentContainer} key={index}>    
@@ -45,6 +50,7 @@ export default class Principal extends PureComponent {
                                 {item.titulo}
                             </Text>
                         </View>
+{/* criação das estrelas referenciando a nota dada pelo usuário, com verificação condicional para alterar o preenchimento de cada uma*/}
                         <View style={styles.favView}>
                             <Image source={require('../../assets/imgs/favoritos.png')} 
                                     style={ item.nota > 0 ? styles.favTrue : styles.favFalse }
@@ -79,6 +85,7 @@ export default class Principal extends PureComponent {
                 title= {`${this.state.info.cidade} - ${this.state.info.bairro}`}
                 navigation={this.props.navigation}
             />
+{/*criação da tela de rolagem com referenciação do elemento scroll para ser usado futuramente pelo componente Menu*/}
             <ScrollView 
                 ref={(d) => {this.scroll = d }}
                 contentContainerStyle={styles.scroll}
@@ -98,6 +105,7 @@ export default class Principal extends PureComponent {
                 </View>
 
                 <View style={styles.menuView}>
+{/* Renderização do componente Menu, sendo passado como props o scroll e o resultado do da chamada da api para uso interno */}
                     <Menu
                         scroll={this.scroll}
                         info={this.state.info}
@@ -107,6 +115,8 @@ export default class Principal extends PureComponent {
 
                 <View style={styles.mapContainer}>
                     <View style={styles.mapView}>
+
+                    {/* verificação dos dados de posicionamento retornados pela api antes de renderizar o mapa */}
                         {this.state.info.latitude && this.state.info.longitude && (
                             <MapView 
                                 style={styles.map}
@@ -134,7 +144,7 @@ export default class Principal extends PureComponent {
                     />
                 </View>
 
-                
+                {/* renderização dos elementos retornados pela chamada de comentários da API */}
                 {this.renderComentarios()}
 
             </ScrollView>
@@ -224,6 +234,7 @@ const styles = StyleSheet.create ({
         bottom: 3,
     },
 
+// estilos relacionados aos comentários
     comentContainer: {
         backgroundColor: 'white',
         flex: 1,
